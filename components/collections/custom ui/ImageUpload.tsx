@@ -46,7 +46,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
             <Button
               className="bg-grey-1 text-white"
               onClick={(e) => {
-                console.log(e);
                 e.stopPropagation();
                 e.preventDefault();
 

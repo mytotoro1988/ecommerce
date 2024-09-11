@@ -7,7 +7,7 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 
-import { navLinks } from "../../../lib/constant";
+import { navLinks } from "@/lib/constant";
 
 const TopBar = () => {
   const [dropdownMenu, setDropdownMenu] = useState(false);

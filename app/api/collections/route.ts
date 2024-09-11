@@ -1,11 +1,13 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
-import { connectToDb } from "../../../lib/mongoDb";
+import { connectToDb } from "@/lib/mongoDb";
+
 import Collection from "@/lib/models/Collection";
 
-const POST = async (req: NextRequest) => {
-  const { userId } = auth();
+export const POST = async (req: NextRequest) => {
   try {
+    const { userId } = auth();
+
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 403 });
     }
@@ -22,15 +24,42 @@ const POST = async (req: NextRequest) => {
       return new NextResponse("Title and Image is required", { status: 400 });
     }
 
-    const newCollection = await Collection.createIndex({
+    const newCollection = await Collection.create({
       title,
       description,
       image,
     });
+
+    await newCollection.save();
+
+    return new NextResponse(newCollection, { status: 200 });
   } catch (e) {
     console.log(["Collections_POST", e]);
+
     return new NextResponse("Internal Server Error", {
       status: 500,
     });
   }
 };
+export const GET = async (req: NextResponse) => {
+  try {
+    const { userId } = auth();
+
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 403 });
+    }
+    await connectToDb();
+
+    const collections = await Collection.find().sort({ createdAt: "desc" });
+
+    return NextResponse.json(collections, { status: 200 });
+  } catch (e) {
+    console.log(["Collections_GET", e]);
+
+    return new NextResponse("Internal Server Error", {
+      status: 500,
+    });
+  }
+};
+
+export const dynamic = "force-dynamic";
