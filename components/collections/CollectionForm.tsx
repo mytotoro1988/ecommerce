@@ -29,7 +29,7 @@ const formSchema = z.object({
 type CollectionFromProps = {
   initialData?: CollectionType | null;
 };
-const CollectionForm: React.FC<CollectionFromProps> = ({ initialData }) => {
+const CollectionForm = ({ initialData }: CollectionFromProps) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -47,13 +47,18 @@ const CollectionForm: React.FC<CollectionFromProps> = ({ initialData }) => {
     try {
       setLoading(true);
       const url = initialData
-        ? `/api/collections${initialData._id}`
+        ? `/api/collections/${initialData._id}`
         : `/api/collections`;
+
+      console.log(initialData);
+      console.log(url);
+
+      console.log(values);
+
       const res = await fetch(url, {
         method: "POST",
         body: JSON.stringify(values),
       });
-      console.log(res);
 
       if (res.ok) {
         setLoading(false);
@@ -69,7 +74,9 @@ const CollectionForm: React.FC<CollectionFromProps> = ({ initialData }) => {
   };
   return (
     <div className="p-10 ">
-      <p className="text-heading2-bold ">Create Collection</p>
+      <p className="text-heading2-bold ">
+        {initialData ? "Update Collection" : "Create Collection"}
+      </p>
       <Separator className="bg-grey-1 mt-4 mb-7" />
 
       <Form {...form}>

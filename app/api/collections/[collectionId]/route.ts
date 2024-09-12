@@ -42,3 +42,49 @@ export const GET = async (
     return new NextResponse("internal error", { status: 500 });
   }
 };
+
+export const POST = async (
+  req: NextRequest,
+  { params }: { params: { collectionId: string } }
+) => {
+  try {
+    const { userId } = auth();
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+    await connectToDb();
+
+    let collection = await Collection.findById(params.collectionId);
+
+    if (!collection) {
+      return new NextResponse(
+        JSON.stringify({ message: "Collection not found" }),
+        { status: 404 }
+      );
+    }
+
+    const { title, description, image } = await req.json();
+
+    if (!title || !image) {
+      return new NextResponse("Title and Image is required", {
+        status: 400,
+      });
+    }
+    collection = await Collection.findByIdAndUpdate(
+      params.collectionId,
+      {
+        title,
+        description,
+        image,
+      },
+      { new: true }
+    );
+
+    collection.save();
+
+    return NextResponse.json(collection, { status: 200 });
+  } catch (err) {
+    console.log("[collectionId_POST]", err);
+    return new NextResponse("internal error", { status: 500 });
+  }
+};

@@ -12,21 +12,23 @@ const CollectionDetail = ({ params }: { params: { collectionId: string } }) => {
   }, []);
   const getCollectionDetail = async () => {
     try {
-      const res = await fetch(`api/collections/${params.collectionId}`, {
+      setLoading(true);
+      const res = await fetch(`/api/collections/${params.collectionId}`, {
         method: "GET",
       });
-
       const data = await res.json();
       setCollectionDetails(data);
-      console.log(data);
-
       setLoading(false);
     } catch (err) {
       console.log("Collection_GET", err);
     }
   };
 
-  return loading ? <Loader /> : <CollectionForm />;
+  return loading ? (
+    <Loader />
+  ) : (
+    <CollectionForm initialData={collectionDetails} />
+  );
 };
 
 export default CollectionDetail;
