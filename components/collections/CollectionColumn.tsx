@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import Delete from "./custom ui/Delete";
+import Delete from "./customUi/Delete";
 import Link from "next/link";
 
 export const columns: ColumnDef<CollectionType>[] = [

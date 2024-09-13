@@ -3,6 +3,8 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -16,21 +18,26 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import ImageUpload from "./customUi/ImageUpload";
-import { useState } from "react";
-import toast from "react-hot-toast";
-import Delete from "./customUi/Delete";
+import ImageUpload from "@/components/collections/customUi/ImageUpload";
+import Delete from "@/components/collections/customUi/Delete";
 
 const formSchema = z.object({
   title: z.string().min(2).max(20),
   description: z.string().min(2).max(500).trim(),
-  image: z.string(),
+  media: z.array(z.string()),
+  category: z.string(),
+  collections: z.array(z.string()),
+  tags: z.array(z.string()),
+  sizes: z.array(z.string()),
+  colors: z.array(z.string()),
+  price: z.coerce.number().min(0.1),
+  expense: z.coerce.number().min(0.1),
 });
 
-type CollectionFromProps = {
-  initialData?: CollectionType | null;
+type ProductFromProps = {
+  initialData?: ProductType | null;
 };
-const CollectionForm = ({ initialData }: CollectionFromProps) => {
+const ProductForm = ({ initialData }: ProductFromProps) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -40,7 +47,14 @@ const CollectionForm = ({ initialData }: CollectionFromProps) => {
       : {
           title: "",
           description: "",
-          image: "",
+          media: [],
+          category: "",
+          collections: [],
+          tags: [],
+          sizes: [],
+          colors: [],
+          price: 0.1,
+          expense: 0.1,
         },
   });
 
@@ -169,4 +183,4 @@ const CollectionForm = ({ initialData }: CollectionFromProps) => {
   );
 };
 
-export default CollectionForm;
+export default ProductForm;

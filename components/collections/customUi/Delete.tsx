@@ -17,16 +17,13 @@ import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
 
 type DeleteProps = {
-  item: object;
   id: string;
 };
 
-const Delete: React.FC<DeleteProps> = ({ item, id }) => {
+const Delete: React.FC<DeleteProps> = ({ id }) => {
   const [loading, setLoading] = useState(false);
 
   const onDelete = async () => {
-    console.log(item, id);
-
     try {
       setLoading(true);
       const res = await fetch(`/api/collections/${id}`, {

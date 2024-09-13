@@ -1,6 +1,6 @@
 "use client";
 import CollectionForm from "@/components/collections/CollectionForm";
-import Loader from "@/components/collections/custom ui/Loader";
+import Loader from "@/components/collections/customUi/Loader";
 import React, { useEffect, useState } from "react";
 
 const CollectionDetail = ({ params }: { params: { collectionId: string } }) => {

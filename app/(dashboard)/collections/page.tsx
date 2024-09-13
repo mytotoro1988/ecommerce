@@ -1,6 +1,6 @@
 "use client";
 import { columns } from "@/components/collections/CollectionColumn";
-import { DataTable } from "@/components/collections/custom ui/DataTable";
+import { DataTable } from "@/components/collections/customUi/DataTable";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@radix-ui/react-separator";
 import { Plus } from "lucide-react";
